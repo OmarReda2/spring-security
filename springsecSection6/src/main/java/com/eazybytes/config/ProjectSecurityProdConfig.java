@@ -10,12 +10,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.password.HaveIBeenPwnedRestApiPasswordChecker;
 
-
 import static org.springframework.security.config.Customizer.withDefaults;
 
+@Profile("prod")
 @Configuration
-@Profile("!prod")
-public class ProjectSecurityConfig {
+public class ProjectSecurityProdConfig {
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
