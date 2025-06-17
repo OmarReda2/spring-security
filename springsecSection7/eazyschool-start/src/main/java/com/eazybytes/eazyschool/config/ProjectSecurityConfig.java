@@ -33,13 +33,19 @@ public class ProjectSecurityConfig {
                                 "/courses", "/about", "/assets/**", "/login/**").permitAll())
                 .formLogin(flc ->
                         flc.loginPage("/login")
-                                .defaultSuccessUrl("/dashboard")
-                                .failureUrl("/login?error")
+                           .defaultSuccessUrl("/dashboard")
+                           .failureUrl("/login?error")
 
-                                .successHandler(authenticationSuccessHandler)
-                                .failureHandler(authenticationFailureHandler)
+                           .successHandler(authenticationSuccessHandler)
+                           .failureHandler(authenticationFailureHandler)
 
-                                .usernameParameter("userId").passwordParameter("/secretPwd"))
+                           .usernameParameter("userId").passwordParameter("secretPwd"))
+
+                .logout(loc -> loc.logoutSuccessUrl("/login?logout=true")
+                                  .clearAuthentication(true)
+                                  .invalidateHttpSession(true)
+                                  .deleteCookies("JSESSIONID"))
+
                 .httpBasic(Customizer.withDefaults());
 
         return http.build();
