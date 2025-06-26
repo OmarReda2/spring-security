@@ -36,10 +36,15 @@ public class ProjectSecurityConfig {
 
         http.requiresChannel(rcc -> rcc.anyRequest().requiresInsecure()) // Only HTTP
             .authorizeHttpRequests((requests) -> requests
-            .requestMatchers("/myAccount").hasAuthority("VIEWACCOUNT")
-            .requestMatchers( "/myBalance").hasAnyAuthority("VIEWACCOUNT", "VIEWBALANCE")
-            .requestMatchers("/myLoans").hasAuthority("VIEWLOANS")
-            .requestMatchers("/myCards").hasAuthority("VIEWCARDS")
+//            .requestMatchers("/myAccount").hasAuthority("VIEWACCOUNT")
+//            .requestMatchers( "/myBalance").hasAnyAuthority("VIEWACCOUNT", "VIEWBALANCE")
+//            .requestMatchers("/myLoans").hasAuthority("VIEWLOANS")
+//            .requestMatchers("/myCards").hasAuthority("VIEWCARDS")
+//            .requestMatchers("/user").authenticated()
+            .requestMatchers("/myAccount").hasRole("USER")
+            .requestMatchers( "/myBalance").hasAnyRole("USER", "ADMIN")
+            .requestMatchers("/myLoans").hasAnyRole("USER")
+            .requestMatchers("/myCards").hasAnyRole("USER")
             .requestMatchers("/user").authenticated()
             .requestMatchers("/notices", "/contact", "/error", "/register", "/invalidSession").permitAll());
         http.formLogin(withDefaults());
