@@ -34,8 +34,12 @@ public class ProjectSecurityProdConfig {
                 .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
                 .requiresChannel(rcc -> rcc.anyRequest().requiresSecure()) // Only HTTPS
                 .authorizeHttpRequests((requests) -> requests
-                .requestMatchers("/myAccount", "/myBalance", "/myLoans", "/myCards", "/user").authenticated()
-                .requestMatchers("/notices", "/contact", "/error", "/register", "/invalidSession").permitAll());
+                        .requestMatchers("/myAccount").hasAuthority("VIEWACCOUNT")
+                        .requestMatchers( "/myBalance").hasAnyAuthority("VIEWACCOUNT", "VIEWBALANCE")
+                        .requestMatchers("/myLoans").hasAuthority("VIEWLOANS")
+                        .requestMatchers("/myCards").hasAuthority("VIEWCARDS")
+                        .requestMatchers("/user").authenticated()
+                        .requestMatchers("/notices", "/contact", "/error", "/register", "/invalidSession").permitAll());
 
 
         // cors configuration
@@ -43,7 +47,7 @@ public class ProjectSecurityProdConfig {
             @Override
             public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                 CorsConfiguration config = new CorsConfiguration();
-                config.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
+                config.setAllowedOrigins(Collections.singletonList("https://localhost:4200")); //https
                 config.setAllowedMethods(Collections.singletonList("*"));
                 config.setAllowCredentials(true);
                 config.setAllowedHeaders(Collections.singletonList("*"));
